@@ -14,7 +14,7 @@ For help use: otask -h
 		 -h, --help          Displays help message
 		 -q, --quiet         Output as little as possible, overrides verbose
 		 -V, --verbose       Verbose output
-		 -g, --growl					Use Growl for feedback
+		 -g, --growl         Use Growl for feedback
 
 ## Author
 
