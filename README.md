@@ -6,7 +6,7 @@ This is a CLI for OmniFocus. I had an AppleScript/Ruby monstrosity that actually
 
 ### Requirements
 
-You need a few things before this will even think about running for you. RubyGems is a must. I still haven't figured out if that's part of the default OS X install or not, but if you have Developer tools, you've got it. Then you need the 'appscript' gem. You also need the gems 'chronic' and 'amatch'. You can install each by using `gem install gemname`, and you may have to run the command with `sudo`, depending on your system's permissions.
+You need a few things before this will even think about running for you. RubyGems is a must. I still haven't figured out if that's part of the default OS X install or not, but if you have Developer tools, you've got it. Then you need the 'rb-appscript' gem. You also need the gems 'chronic' and 'amatch'. You can install each by using `gem install gemname`, and you may have to run the command with `sudo`, depending on your system's permissions.
 
 #### Documentation
 
