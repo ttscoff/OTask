@@ -25,9 +25,9 @@ Dates are entered in natural language format. You can type "tomorrow," "in 3 day
 
 ### Command line options
 
- -h, --help     Displays help message
- -q, --quiet    Output as little as possible, overrides verbose
- -V, --verbose  Verbose output
+ -h, --help     Displays help message   
+ -q, --quiet    Output as little as possible, overrides verbose   
+ -V, --verbose  Verbose output   
  -g, --growl    Use Growl for feedback
  
 ### Example usage
