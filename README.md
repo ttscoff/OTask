@@ -4,14 +4,6 @@ OTask provides CLI functionality for adding tasks to OmniFocus.
 
 It requires rb-appscript, amatch and chronic, all installable with rubygems
 
-## Examples
-This command does blah blah blah.
-     otask foo.txt
-
-Other examples:
-     otask -q bar.doc
-     otask --verbose foo.html
-
 ## Usage 
 
      otask [options] "Task string"
