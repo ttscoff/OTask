@@ -24,7 +24,6 @@
 
 
 require 'optparse' 
-require 'rdoc/usage'
 require 'ostruct'
 require 'date'
 require 'rubygems'
