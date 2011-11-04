@@ -92,8 +92,8 @@ class OTask
 			if @options.growl
 				procs = app("System Events").processes.name.get(:result_type => :list)
 
-				if procs.include? "GrowlHelperApp"
-					app("GrowlHelperApp").register(:all_notifications => ["Alert"], :as_application => "OTask", :icon_of_application => "OmniFocus.app", :default_notifications => ["Alert"])
+				if procs.include? "Growl"
+					app("Growl").register(:as_application => "OTask", :all_notifications => ['Alert'], :default_notifications => ['Alert'], :icon_of_application => "OmniFocus")
 				else
 					@options.growl = false
 				end
@@ -234,7 +234,7 @@ class OTask
     end
     
 		def growl(title, message)
-			app("GrowlHelperApp").notify(:title => title, :description => message, :application_name => "OTask", :with_name => "Alert") if @options.growl
+			app("Growl").notify(:title => title, :description => message, :application_name => "OTask", :with_name => "Alert") if @options.growl
 		end
 
     def process_command
