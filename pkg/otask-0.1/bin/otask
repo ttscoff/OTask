@@ -157,12 +157,13 @@ class OTask
     def output_help
       output_version
       puts 'otask [options] "Task string"'
-
+      puts
       puts 'Options'
       puts '-h, --help          Displays help message'
       puts '-q, --quiet         Output as little as possible, overrides verbose'
       puts '-V, --verbose       Verbose output'
       puts '-g, --growl					Use Growl for feedback'
+      exit(0)
     end
     
     # Shamefully stolen from RDoc#usage. We cannot use RDoc::usage because
@@ -219,7 +220,7 @@ class OTask
 
 		end
 		
-		def parse_date(datestring)
+    def parse_date(datestring)
 			days = 0
 			if datestring =~ /^\+(\d+)$/
 				days = (60 * 60 * 24 * $1.to_i)
@@ -230,7 +231,7 @@ class OTask
       # parsed = newdate.strftime('%D %l:%M%p').gsub(/\s+/,' ');
       # return parsed =~ /1969/ ? false : parsed
 			return newdate
-	  end
+    end
     
 		def growl(title, message)
 			app("GrowlHelperApp").notify(:title => title, :description => message, :application_name => "OTask", :with_name => "Alert") if @options.growl
