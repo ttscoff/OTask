@@ -162,7 +162,7 @@ class OTask
       puts '-h, --help          Displays help message'
       puts '-q, --quiet         Output as little as possible, overrides verbose'
       puts '-V, --verbose       Verbose output'
-      puts '-g, --growl					Use Growl for feedback'
+      puts '-g, --growl         Use Growl for feedback'
       exit(0)
     end
     
