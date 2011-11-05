@@ -13,7 +13,7 @@
 #   -h, --help          Displays help message
 #   -q, --quiet         Output as little as possible, overrides verbose
 #   -V, --verbose       Verbose output
-#   -g, --growl					Use Growl for feedback
+#   -g, --growl         Use Growl for feedback
 #
 # == Author
 #   Brett Terpstra
@@ -33,7 +33,7 @@ require 'chronic'
 require 'rdoc'
 
 class OTask
-  VERSION = '0.1'
+  VERSION = '0.2'
   
   attr_reader :options
 
@@ -45,27 +45,28 @@ class OTask
     @options = OpenStruct.new
     @options.verbose = false
     @options.quiet = false
+
     # TO DO - add additional defaults
   end
 
   # Parse options, check arguments, then process the command
   def run
-        
-    if parsed_options? && arguments_valid? 
-      
-      puts "Start at #{DateTime.now}\n\n" if @options.verbose
-      
-      output_options if @options.verbose # [Optional]
-            
-      process_arguments            
+    if parsed_options? && !arguments_valid?
+      usage_and_exit
+    end
+
+    if parsed_options? && arguments_valid?
+      if @options.verbose
+        puts "Start at #{DateTime.now}\n\n"
+        puts "--Options--------------------"
+        output_options if @options.verbose # [Optional]
+        puts "--Task-Properties------------" 
+      end
+      process_arguments
       process_command
       
       puts "\nFinished at #{DateTime.now}" if @options.verbose
-      
-    else
-      usage_and_exit
     end
-      
   end
   
   protected
@@ -74,10 +75,16 @@ class OTask
       
       # Specify options
       opts = OptionParser.new
-      opts.on('-h', '--help')       { output_help }
-      opts.on('-V', '--verbose')    { @options.verbose = true }
-      opts.on('-q', '--quiet')      { @options.quiet = true }
-			opts.on('-g', '--growl')			{ @options.growl = true }
+      opts.on( '-h', '--help', 'Display this screen' ) do
+        puts opts
+        puts "\nNotes are entered in parenthesis: This is my title (This is the note)"
+        puts "Tags are added with hashmarks #like #this. They can appear anywhere in the title string, but will be removed from the output."
+        puts "Note: natural-language date parsing will work better if you install the Chronic Ruby gem (`sudo gem install chronic`)." unless TodoUtils.new.use_chronic
+        exit(0)
+      end
+      opts.on('-V', '--verbose', 'Verbose logging')    { @options.verbose = true }
+      opts.on('-q', '--quiet', 'Run silently')      { @options.quiet = true }
+			opts.on('-g', '--growl', 'Use Growl notifications')  { @options.growl = true }
       # TO DO - add additional options
             
       opts.parse!(@arguments) rescue return false
@@ -90,9 +97,9 @@ class OTask
     def process_options
       @options.verbose = false if @options.quiet
 			if @options.growl
-				procs = app("System Events").processes.name.get(:result_type => :list)
+				procs = app("System Events").processes.bundle_identifier.get(:result_type => :list)
 
-				if procs.include? "Growl"
+				if procs.include? "com.Growl.GrowlHelperApp"
 					app("Growl").register(:as_application => "OTask", :all_notifications => ['Alert'], :default_notifications => ['Alert'], :icon_of_application => "OmniFocus")
 				else
 					@options.growl = false
@@ -101,17 +108,15 @@ class OTask
     end
     
     def output_options
-      puts "Options:\n"
-      
       @options.marshal_dump.each do |name, val|        
-        puts "  #{name} = #{val}"
+        puts "  #{name}: #{val}"
       end
     end
 
     # True if required arguments were provided
     def arguments_valid?
       # TO DO - implement your real logic here
-      true if @arguments.length == 1 
+      @arguments.length == 1 ? true : false
     end
     
     # Setup the arguments
@@ -153,25 +158,9 @@ class OTask
 			end
 			@options.name = titlestring
     end
-    
-    def output_help
-      output_version
-      puts 'otask [options] "Task string"'
-      puts
-      puts 'Options'
-      puts '-h, --help          Displays help message'
-      puts '-q, --quiet         Output as little as possible, overrides verbose'
-      puts '-V, --verbose       Verbose output'
-      puts '-g, --growl         Use Growl for feedback'
-      exit(0)
-    end
-    
-    # Shamefully stolen from RDoc#usage. We cannot use RDoc::usage because
-    # RubyGems will call this from a wrapper, and #usage is hardcoded to look
-    # at the top-level file instead of the current one. I have changed this
-    # code to instead just parse a string.
+
     def usage_and_exit
-      puts 'otask [options] "Task string"'
+      puts 'Usage: otask [options] "Task string"'
       puts
       puts "For help use: otask -h"
 
@@ -266,6 +255,9 @@ class OTask
 					puts o
 				end
 			end
+			@props.each do |name, val|        
+        puts "  #{name}: #{val}"
+      end if @options.verbose
     end
 end
 
