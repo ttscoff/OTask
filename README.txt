@@ -21,12 +21,12 @@ A CLI for OmniFocus. I had an AppleScript/Ruby monstrosity that actually worked 
 
 OTask uses a custom syntax to allow entry of the various elements of an action in one line of text. The following formats can be used anywhere in the line, with the exception of the flag (!) which must be the last character on the line, preceded by a space.
 
- * @context			   (fragment, no spaces)
- * \#project             (fragment, no spaces)
+ * @context			   			(fragment, no spaces)
+ * \#project            (fragment, no spaces)
  * due(due date)        (can be shortened as d(date))
  * start(start date)    (can be shortened as s(date))
  * (notes)
- * !						(sets task as flagged)
+ * !										(sets task as flagged)
  
 Contexts and project specifiers should not include spaces. The algorithm that is used will find the best match for the string you give it, so you only need to include enough of it to distinguish it from other contexts or projects. For example, if I were going to put an action directly into my Markdown QuickTags folder, I could just use "#mdqt" and it will find it. "@corr" will get me the "correspondence" context.
 
@@ -41,10 +41,9 @@ Dates are entered in natural language format. You can type "tomorrow," "in 3 day
 
 == REQUIREMENTS:
 
-* rubygems
-* rb-appscript gem 
-* chronic gem
-* amatch gem
+* rb-appscript
+* chronic
+* amatch
 
 == INSTALL:
 
