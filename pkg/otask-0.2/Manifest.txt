@@ -1,8 +1,0 @@
-.autotest
-History.txt
-Manifest.txt
-README.txt
-Rakefile
-bin/otask
-lib/otask.rb
-test/test_otask.rb
