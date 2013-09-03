@@ -16,6 +16,7 @@ OTask uses a custom syntax to allow entry of the various elements of an action i
  * \#project             (fragment, no spaces)
  * due(due date)        (can be shortened as d(date))
  * start(start date)    (can be shortened as s(date))
+ * create(creation date)    (can be shortened as c(date))
  * (notes)
  * !						(sets task as flagged)
  

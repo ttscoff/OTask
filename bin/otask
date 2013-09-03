@@ -146,6 +146,13 @@ class OTask
       @options.due = duematch.nil? ? false : duematch[1]
       titlestring.sub!(/ d(ue)?\(([^\)]+)\)/,'') unless duematch.nil?
 
+      # creation date
+      creationmatch = titlestring.match(/ c(?:reate)?\(([^\)]+)\)/)
+      @options.creation = creationmatch.nil? ? false : creationmatch[1]
+      titlestring.sub!(/ c(reate)?\(([^\)]+)\)/,'') unless creationmatch.nil?
+
+
+
       @options.notes = ''
       if titlestring =~ /\(([^\)]+)\)/
         @options.notes = $1
@@ -242,6 +249,7 @@ class OTask
       end
       @props['start_date'] = parse_date(@options.start) if @options.start
       @props['due_date'] = parse_date(@options.due) if @options.due
+      @props['creation_date'] = parse_date(@options.creation) if @options.creation
       @props['note'] = @options.notes unless @options.notes == ''
       @props['flagged'] = @options.flagged
       add_task(dd, @props)
