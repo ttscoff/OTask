@@ -84,10 +84,25 @@ You'll find the Action in LaunchBar after it indexes. Type 'ota' (or as much as 
 * rb-appscript
 * chronic
 * amatch
+* rake
+
+== INSTALLING DEPENDENCIES:
+
+To install each of the dependencies manually you can run:
+
+* gem install <requirement>
+
+You may need to run these commands as sudo depending on your system permissions:
+
+* sudo gem install <requirement>
 
 == INSTALL:
 
-* sudo gem install otask
+Change the working directory to the folder OTask was extracted to.
+
+Run:
+
+* rake install_gem
 
 == LICENSE:
 
