@@ -8,5 +8,5 @@ on handle_string(actionString)
 end handle_string
 
 on runRubyScript(action)
-	tell application "Terminal" to do script "$HOME/scripts/otask -g \"" & action & "\""
+	do shell script "/usr/bin/otask -g \"" & action & "\""
 end runRubyScript
