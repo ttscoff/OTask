@@ -4,47 +4,42 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Otask by ttscoff</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/ttscoff/OTask">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/ttscoff/OTask/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/ttscoff/OTask/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
-
     <div class="wrapper">
+      <header>
+        <h1>Otask</h1>
+        <p>Ruby CLI for OmniFocus</p>
 
+        <p class="view"><a href="https://github.com/ttscoff/OTask">View the Project on GitHub <small>ttscoff/OTask</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ttscoff/OTask/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ttscoff/OTask/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ttscoff/OTask">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
       <section>
-        <div id="title">
-          <h1>Otask</h1>
-          <p>Ruby CLI for OmniFocus</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/ttscoff">ttscoff</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
-        </div>
-
         <p>This is a CLI for OmniFocus. I had an AppleScript/Ruby monstrosity that actually worked with TaskPaper, The Hit List, Things and OmniFocus, but that one got out of hand. I took the good parts of it, concentrated on OmniFocus and converted it to <a href="http://appscript.sourceforge.net/">appscript</a>. The result is OTask.</p>
 
-<h3>Requirements</h3>
+<p>I don't know how long appscript is going to work for us, and it's now a dead project. I make no promises. This version of oTask has been tested on Ruby 2.0 (Mavericks) and with OmniFocus and OmniFocus 2.</p>
 
-<p>You need a few things before this will even think about running for you. RubyGems is a must. I still haven't figured out if that's part of the default OS X install or not, but if you have Developer tools, you've got it. Then you need the 'rb-appscript' gem. You also need the gems 'chronic' and 'amatch'. You can install each by using <code>gem install gemname</code>, and you may have to run the command with <code>sudo</code>, depending on your system's permissions.</p>
+<h3>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
 
-<h4>Documentation</h4>
+<pre><code>$ [sudo] gem install otask
+</code></pre>
+
+<h3>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h3>
 
 <p>OTask uses a custom syntax to allow entry of the various elements of an action in one line of text. The following formats can be used anywhere in the line, with the exception of the flag (!) which must be the last character on the line, preceded by a space.</p>
 
@@ -53,21 +48,23 @@
 <a href="https://github.com/context" class="user-mention">@context</a>            (fragment, no spaces)</li>
 <li>#project             (fragment, no spaces)</li>
 <li>due(due date)        (can be shortened as d(date))</li>
-<li>start(start date)    (can be shortened as s(date))</li>
+<li>create(creation date)    (can be shortened as c(date))</li>
 <li>(notes)</li>
 <li>!                        (sets task as flagged)</li>
-</ul><p>Contexts and project specifiers should not include spaces. The algorithm that is used will find the best match for the string you give it, so you only need to include enough of it to distinguish it from other contexts or projects. For example, if I were going to put an action directly into my Markdown QuickTags folder, I could just use "#mdqt" and it will find it. "@corr" will get me the "correspondence" context.</p>
+</ul><p>Contexts and project specifiers should not include spaces. The algorithm that is used will find the best match for the string you give it, so you only need to include enough of it to distinguish it from other contexts or projects. For example, if I were going to put an action directly into my Markdown QuickTags folder, I could just use "#mdqt" and it will find it. "<a href="https://github.com/corr" class="user-mention">@corr</a>" will get me the "correspondence" context.</p>
 
 <p>Dates are entered in natural language format. You can type "tomorrow," "in 3 days," "next tuesday," etc. You can also use "+3" to set a date 3 days from the current day, "+7" for a week, and so on.</p>
 
-<h3>Command line options</h3>
+<h3>
+<a name="command-line-options" class="anchor" href="#command-line-options"><span class="octicon octicon-link"></span></a>Command line options</h3>
 
 <p>-h, --help     Displays help message<br>
  -q, --quiet    Output as little as possible, overrides verbose<br>
  -V, --verbose  Verbose output<br>
  -g, --growl    Use Growl for feedback</p>
 
-<h3>Example usage</h3>
+<h3>
+<a name="example-usage" class="anchor" href="#example-usage"><span class="octicon octicon-link"></span></a>Example usage</h3>
 
 <pre><code>$ otask "Write a letter to mom"
 </code></pre>
@@ -86,7 +83,7 @@
 <pre><code>$ otask "Brainstorm for the morning meeting (Bill had some ideas, it might be worth checking in with him this afternoon) d(tomorrow 8am) #hipstartup @think"
 </code></pre>
 
-<p>This will create a task with a note. Everything in parenthesis is removed from the task name and placed into the notes of the action, sans parenthesis. Note that the due date prefix can be shortened to just "d," (and the start date prefix can be just "s").</p>
+<p>This will create a task with a note. Everything in parenthesis is removed from the task name and placed into the notes of the action, sans parenthesis. Note that the due date prefix can be shortened to just "d".</p>
 
 <p>OTask looks for notes in parenthesis, but it can also receive piped input from other applications as a note for the task. If you wanted to include text from a file, the output of a command or the plain-text contents of your clipboard, you can just pipe the output into the command, specifying the rest of the options as usual.</p>
 
@@ -95,36 +92,43 @@
 
 <p>That would take the current contents of your clipboard and make them the attached note on the "Notes from the morning meeting" task (with the context "reference").</p>
 
-<h4>Calling from LaunchBar (et al.)</h4>
+<h3>
+<a name="calling-from-launchbar-et-al" class="anchor" href="#calling-from-launchbar-et-al"><span class="octicon octicon-link"></span></a>Calling from LaunchBar (et al.)</h3>
 
 <p>You can do this with any app that can run a script with input, or call it from automated scripts if you could think of a reason to. Below is the AppleScript for a LaunchBar action. Create a new script in AppleScript Editor and paste the code in. Edit the path in the last function to point to wherever you put the otask script. Save the AppleScript as OTask.scpt in <code>~/Library/Application Support/LaunchBar/Actions</code>. </p>
 
 <p>You'll find the Action in LaunchBar after it indexes. Type 'ota' (or as much as you need to get it to come up) and then press space bar. Use the syntax shown above to write out your action and its elements, but leave out the 'otask' part and any parameters. Hit return and Growl (you have it <a href="http://growl.info">installed, right?</a>) will tell you what's up.</p>
 
-<pre><code>        on handle_string(actionString)
-            if (length of actionString is not 0) then
-                my runRubyScript(actionString)
-            end if
-            open location "x-launchbar:hide"
-        end handle_string
+<pre><code>on handle_string(actionString)
+    if (length of actionString is not 0) then
+        my runRubyScript(actionString)
+    end if
+    open location "x-launchbar:hide"
+end handle_string
 
-        on runRubyScript(action)
-            set res to do shell script "$HOME/scripts/otask.rb -g \"" &amp; action &amp; "\""
-        end runRubyScript
+on runRubyScript(action)
+    do shell script "/usr/bin/otask -g \"" &amp; action &amp; "\""
+end runRubyScript
 </code></pre>
 
-<h2>Author</h2>
+<h3>
+<a name="author" class="anchor" href="#author"><span class="octicon octicon-link"></span></a>Author</h3>
 
 <p>Brett Terpstra</p>
 
-<h2>Copyright</h2>
+<h3>
+<a name="copyright" class="anchor" href="#copyright"><span class="octicon octicon-link"></span></a>Copyright</h3>
 
-<p>Copyright (c) 2011 Brett Terpstra. Licensed under the MIT License:
-<a href="http://www.opensource.org/licenses/mit-license.php">http://www.opensource.org/licenses/mit-license.php</a></p>
+<p>Copyright (c) 2011 Brett Terpstra. Licensed under the MIT License:</p>
+
+<p><a href="http://www.opensource.org/licenses/mit-license.php">http://www.opensource.org/licenses/mit-license.php</a></p>
       </section>
-
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/ttscoff">ttscoff</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
