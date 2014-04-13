@@ -8,7 +8,7 @@ A CLI for OmniFocus. I had an AppleScript/Ruby monstrosity that actually worked 
 
 == FEATURES/PROBLEMS:
 
-* Natural language date entry for start and due dates
+* Natural language date entry for due dates
 * TextMate style fragment matching for projects and contexts
 * Include notes inline or by piping in
 * Optional Growl notifications
@@ -22,7 +22,6 @@ OTask uses a custom syntax to allow entry of the various elements of an action i
  * @context             (fragment, no spaces)
  * #project             (fragment, no spaces)
  * due(due date)        (can be shortened as d(date))
- * start(start date)    (can be shortened as s(date))
  * create(creation date)(can be shortened as c(date))
  * (notes)
  * !                    (sets task as flagged)
@@ -54,7 +53,7 @@ The `-g` parameter gives us our feedback via Growl, which is handy if you're cal
 
 	$ otask "Brainstorm for the morning meeting (Bill had some ideas, it might be worth checking in with him this afternoon) d(tomorrow 8am) #hipstartup @think"
 
-This will create a task with a note. Everything in parenthesis is removed from the task name and placed into the notes of the action, sans parenthesis. Note that the due date prefix can be shortened to just "d," (and the start date prefix can be just "s").
+This will create a task with a note. Everything in parenthesis is removed from the task name and placed into the notes of the action, sans parenthesis. Note that the due date prefix can be shortened to just "d".
 
 OTask looks for notes in parenthesis, but it can also receive piped input from other applications as a note for the task. If you wanted to include text from a file, the output of a command or the plain-text contents of your clipboard, you can just pipe the output into the command, specifying the rest of the options as usual.
 
