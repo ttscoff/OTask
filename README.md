@@ -60,16 +60,17 @@ You can do this with any app that can run a script with input, or call it from a
 
 You'll find the Action in LaunchBar after it indexes. Type 'ota' (or as much as you need to get it to come up) and then press space bar. Use the syntax shown above to write out your action and its elements, but leave out the 'otask' part and any parameters. Hit return and Growl (you have it [installed, right?](http://growl.info)) will tell you what's up.
 
-			on handle_string(actionString)
-				if (length of actionString is not 0) then
-					my runRubyScript(actionString)
-				end if
-				open location "x-launchbar:hide"
-			end handle_string
+	on handle_string(actionString)
+		if (length of actionString is not 0) then
+			my runRubyScript(actionString)
+		end if
+		open location "x-launchbar:hide"
+	end handle_string
 
-			on runRubyScript(action)
-				set res to do shell script "$HOME/scripts/otask.rb -g \"" & action & "\""
-			end runRubyScript
+	on runRubyScript(action)
+		do shell script "/usr/bin/otask -g \"" & action & "\""
+	end runRubyScript
+
 
 ### Author
 
