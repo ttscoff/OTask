@@ -1,14 +1,14 @@
 [appscript]: http://appscript.sourceforge.net/
-[sessions]: http://brettterpstra.com/duplicating-safari-browsing-sessions-between-macs/
-[tony]: http://brettterpstra.com/duplicating-safari-browsing-sessions-between-macs/#comment-16853
 
 This is a CLI for OmniFocus. I had an AppleScript/Ruby monstrosity that actually worked with TaskPaper, The Hit List, Things and OmniFocus, but that one got out of hand. I took the good parts of it, concentrated on OmniFocus and converted it to [appscript][]. The result is OTask.
 
-### Requirements
+I don't know how long appscript is going to work for us, and it's now a dead project. I make no promises. This version of oTask has been tested on Ruby 2.0 (Mavericks) and with OmniFocus and OmniFocus 2.
 
-You need a few things before this will even think about running for you. RubyGems is a must. I still haven't figured out if that's part of the default OS X install or not, but if you have Developer tools, you've got it. Then you need the 'rb-appscript' gem. You also need the gems 'chronic' and 'amatch'. You can install each by using `gem install gemname`, and you may have to run the command with `sudo`, depending on your system's permissions.
+### Installation
 
-#### Documentation
+	$ [sudo] gem install otask
+
+### Documentation
 
 OTask uses a custom syntax to allow entry of the various elements of an action in one line of text. The following formats can be used anywhere in the line, with the exception of the flag (!) which must be the last character on the line, preceded by a space.
 
@@ -54,7 +54,7 @@ OTask looks for notes in parenthesis, but it can also receive piped input from o
 	
 That would take the current contents of your clipboard and make them the attached note on the "Notes from the morning meeting" task (with the context "reference").
 
-#### Calling from LaunchBar (et al.)
+### Calling from LaunchBar (et al.)
 
 You can do this with any app that can run a script with input, or call it from automated scripts if you could think of a reason to. Below is the AppleScript for a LaunchBar action. Create a new script in AppleScript Editor and paste the code in. Edit the path in the last function to point to wherever you put the otask script. Save the AppleScript as OTask.scpt in `~/Library/Application Support/LaunchBar/Actions`. 
 
@@ -71,11 +71,12 @@ You'll find the Action in LaunchBar after it indexes. Type 'ota' (or as much as 
 				set res to do shell script "$HOME/scripts/otask.rb -g \"" & action & "\""
 			end runRubyScript
 
-## Author
+### Author
 
 Brett Terpstra
 
-## Copyright
+### Copyright
 
 Copyright (c) 2011 Brett Terpstra. Licensed under the MIT License:
+
 <http://www.opensource.org/licenses/mit-license.php>
