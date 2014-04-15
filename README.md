@@ -8,6 +8,8 @@ I don't know how long appscript is going to work for us, and it's now a dead pro
 
 	$ [sudo] gem install otask
 
+**Note:** If you use Xcode 5.1 and have trouble installing the gem, see [this post for a fix.](http://kaspermunck.github.io/2014/03/fixing-clang-error/)
+
 ### Documentation
 
 OTask uses a custom syntax to allow entry of the various elements of an action in one line of text. The following formats can be used anywhere in the line, with the exception of the flag (!) which must be the last character on the line, preceded by a space.
