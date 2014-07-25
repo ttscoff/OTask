@@ -1,9 +1,9 @@
 require "minitest/autorun"
-require "omni_task"
+require "otask"
 
-class TestOtask < MiniTest::Unit::TestCase
+class TestOTask < MiniTest::Unit::TestCase
   def test_parsed_options_returns_true_for_valid_arguments
-    task = OmniTask.new(["-g"], '')
+    task = OTask.new(["-g"], '')
     assert_equal true, task.send(:parsed_options?)
   end
 end

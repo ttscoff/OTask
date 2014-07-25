@@ -1,5 +1,5 @@
 # Ensure we require the local version and not one we might have installed already
-require File.join([File.dirname(__FILE__),'lib','otask.rb'])
+require File.join([File.dirname(__FILE__),'lib','version.rb'])
 spec = Gem::Specification.new do |s|
   s.name = 'otask'
   s.version = Otask::VERSION
@@ -14,6 +14,7 @@ spec = Gem::Specification.new do |s|
   s.files = %w(
 bin/otask
 lib/otask.rb
+lib/version.rb
   )
   s.require_paths << 'lib'
   s.has_rdoc = true

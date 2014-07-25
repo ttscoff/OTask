@@ -21,10 +21,7 @@
 #   Copyright (c) 2014 Brett Terpstra. Licensed under the MIT License:
 #   http://www.opensource.org/licenses/mit-license.php
 
-lib = File.expand_path('../../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'otask'
 
-require 'omni_task'
-
-app = OmniTask.new(ARGV, STDIN)
+app = OTask.new(ARGV, STDIN)
 app.run
