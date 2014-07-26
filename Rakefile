@@ -55,13 +55,13 @@ end
 
 desc 'Development version check'
 task :ver do |t|
-  system "grep VERSION lib/otask.rb"
+  system "grep VERSION lib/version.rb"
 end
 
 desc 'Bump incremental version number'
 task :bump, :type do |t, args|
   args.with_defaults(:type => "inc")
-  version_file = "lib/otask.rb"
+  version_file = "lib/version.rb"
   content = IO.read(version_file)
   content.sub!(/VERSION = '(\d+)\.(\d+)\.(\d+)(\.\S+)?'/) {|m|
     major = $1.to_i
