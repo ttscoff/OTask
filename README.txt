@@ -36,6 +36,8 @@ Dates are entered in natural language format. You can type "tomorrow," "in 3 day
  -q, --quiet    Output as little as possible, overrides verbose   
  -V, --verbose  Verbose output   
  -g, --growl    Use Growl for feedback
+ -l  --list     List available projects or contexts
+ -c             Makes --list output space separated strings
 
 ### Example usage
 
@@ -61,6 +63,10 @@ OTask looks for notes in parenthesis, but it can also receive piped input from o
 
 That would take the current contents of your clipboard and make them the attached note on the "Notes from the morning meeting" task (with the context "reference").
 
+The `-l` (list) option can receive either p (project) or c (context), as well as an optional `:[filter]`` on the argument. For example `otask -l c:email` will show all contexts containing a fuzzy match of 'email'.
+
+The -c switch can be used with the -l flag to output space-separated lists for shell completion.
+
 #### Calling from LaunchBar (et al.)
 
 You can do this with any app that can run a script with input, or call it from automated scripts if you could think of a reason to. Below is the AppleScript for a LaunchBar action. Create a new script in AppleScript Editor and paste the code in. Edit the path in the last function to point to wherever you put the otask script. Save the AppleScript as OTask.scpt in `~/Library/Application Support/LaunchBar/Actions`. 
@@ -77,6 +83,17 @@ You'll find the Action in LaunchBar after it indexes. Type 'ota' (or as much as 
 			on runRubyScript(action)
 				set res to do shell script "$HOME/scripts/otask.rb -g \"" & action & "\""
 			end runRubyScript
+
+== CHANGELOG:
+
+0.2.3
+
+* -v --version support
+* -l --list option for listing available projects and contexts
+	* -l can receive either p (project) or c (context), as well as an optional :filter on the argument (e.g. '-l c:email' shows all contexts containing a fuzzy match of 'email')
+* -c switch can be used with the -l flag to output space-separated lists for use with shell completion
+* Better project/context fetching methods, ignore unavailable
+* Improved fuzzy match project/context name results
 
 == REQUIREMENTS:
 
