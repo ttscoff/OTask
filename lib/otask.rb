@@ -1,4 +1,4 @@
-require 'optparse' 
+require 'optparse'
 require 'ostruct'
 require 'date'
 require 'rubygems'
@@ -6,6 +6,7 @@ require 'appscript';include Appscript
 require 'amatch';include Amatch
 require 'chronic'
 require 'rdoc'
+require 'version.rb'
 
 class OTask
   attr_reader :options
@@ -18,14 +19,18 @@ class OTask
     @options = OpenStruct.new
     @options.verbose = false
     @options.quiet = false
+    @options.list = false
+    @options.completion = false
 
+    of = app('OmniFocus')
+    @dd = of.default_document
     # TO DO - add additional defaults
   end
 
   # Parse options, check arguments, then process the command
   def run
-    if parsed_options? && !arguments_valid?
-      usage_and_exit
+    if parsed_options?
+      usage_and_exit unless arguments_valid?
     end
 
     if parsed_options? && arguments_valid?
@@ -33,13 +38,16 @@ class OTask
         puts "Start at #{DateTime.now}\n\n"
         puts "--Options--------------------"
         output_options if @options.verbose # [Optional]
-        puts "--Task-Properties------------" 
+        puts "--Task-Properties------------"
       end
       process_arguments
       process_command
 
       puts "\nFinished at #{DateTime.now}" if @options.verbose
+    else
+      usage_and_exit
     end
+
   end
 
   protected
@@ -48,6 +56,10 @@ class OTask
 
       # Specify options
       opts = OptionParser.new
+      opts.on( '-v', '--version', 'Display version number and exit' ) do
+        output_version
+        Process.exit 0
+      end
       opts.on( '-h', '--help', 'Display this screen' ) do
         puts opts
         puts "\nNotes are entered in parenthesis: This is my title (This is the note)"
@@ -55,9 +67,20 @@ class OTask
         puts "Note: natural-language date parsing will work better if you install the Chronic Ruby gem (`sudo gem install chronic`)." unless TodoUtils.new.use_chronic
         exit(0)
       end
-      opts.on('-V', '--verbose', 'Verbose logging')    { @options.verbose = true }
+      opts.on('-V', '--verbose', 'Verbose logging')    {
+        @options.verbose = true unless @options.completion
+      }
       opts.on('-q', '--quiet', 'Run silently')      { @options.quiet = true }
       opts.on('-g', '--growl', 'Use Growl notifications')  { @options.growl = true }
+      opts.on('-l', '--list TYPE[:filter_pattern]', 'List projects or contexts') do |arg|
+        type, filter = arg.split(/:/)
+        filter = false if filter.nil?
+        @options.list = [type, filter]
+      end
+      opts.on('-c', '--completion', 'Output project/contect list space separated') do |arg|
+        @options.verbose = false
+        @options.completion = true
+      end
       # TO DO - add additional options
 
       opts.parse!(@arguments) rescue return false
@@ -86,10 +109,61 @@ class OTask
       end
     end
 
+    def get_project_names(opt={})
+      kind = opt[:type] || :project
+
+      els = []
+      objects = opt[:type] == :context ? @dd.flattened_contexts : @dd.flattened_projects
+
+      objects.get.each{|p|
+        begin
+          if opt[:type] == :context || !p.status.respond_to?("get")
+            els.push(p.name.get)
+          else
+            els.push(p.name.get) if p.status.get == :active
+          end
+        rescue => e
+          p e
+        end
+      }
+      els
+    end
+
+    def list_type(type, filter)
+
+
+      output = []
+      filtered = filter ? ", filtered by '#{filter}'" : ""
+      case type.downcase
+      when /^p/i
+        puts "List projects#{filtered}:" if @options.verbose
+        output = get_project_names({:type => :project })
+      when /^c/i
+        puts "List contexts#{filtered}:" if @options.verbose
+        output = get_project_names({:type => :context })
+      else
+        puts "Unrecognized list option: #{type}"
+        return false
+      end
+
+      if filter
+        patt = filter.split("").join('.*?')
+        output.delete_if { |el| el !~ /#{patt}/i }
+      end
+
+      if @options.completion
+        print output.map {|item| item.strip.gsub(/\s+/,'')}.join(' ')
+      else
+        puts output
+      end
+      return true
+    end
+
     # True if required arguments were provided
     def arguments_valid?
+      return true if @options.list
       # TO DO - implement your real logic here
-      @arguments.length == 1 ? true : false
+      @arguments.length > 0 ? true : false
     end
 
     # Setup the arguments
@@ -136,6 +210,13 @@ class OTask
       elsif @options.notes && input
         @options.notes = @options.notes + "\n\n" + input
       end
+
+      # See if there's a bang at the end of the task name
+      unless @options.flagged
+        @options.flagged = titlestring.match(/!\Z/).nil? ? false : true
+        titlestring.sub!(/!\Z/,'') if @options.flagged
+      end
+
       @options.name = titlestring
     end
 
@@ -148,45 +229,72 @@ class OTask
     end
 
     def output_version
-      puts "#{File.basename(__FILE__)} version #{VERSION}"
+      puts "oTask version #{OTask::VERSION}"
     end
 
-    def add_task(dd, props)
+    def add_task
 
-      if props['project']
-        proj_name = props["project"]
-        proj = dd.flattened_tasks[proj_name]
+      if @props['project']
+        proj_name = @props["project"]
+        proj = @dd.flattened_projects[proj_name]
       end
-      if props['context']
-        ctx_name = props["context"]
-        ctx = dd.flattened_contexts[ctx_name]
+      if @props['context']
+        ctx_name = @props["context"]
+        ctx = @dd.flattened_contexts[ctx_name]
       end
 
-      tprops = props.inject({}) do |h, (k, v)|
+      tprops = @props.inject({}) do |h, (k, v)|
         h[:"#{k}"] = v
         h
       end
 
       tprops.delete(:project)
-      tprops[:context] = ctx if props['context']
+      tprops[:context] = ctx if @props['context']
+      tprops[:flagged] = @props['flagged']
 
-      t = dd.make(:new => :inbox_task, :with_properties => tprops)
-      t.assigned_container.set(proj) if props['project']
+      t = @dd.make(:new => :inbox_task, :with_properties => tprops)
+      t.assigned_container.set(proj) if @props['project']
 
       return true
     end
 
     def best_match(items,fragment)
+      if @options.verbose
+        print "Expanding #{fragment}"
+      end
 
-      highscore = {'score'=>0,'name'=>nil}
+      good_match = false
+      patt = fragment.split('').join('.*?')
+      # puts "Regex: #{patt}" if @options.verbose
       items.each {|item|
-        if fragment && !item.nil?
-          score = (Jaro.new(item).match(fragment) * 10).to_i
-          highscore = score > highscore['score'] ? {'score'=>score,'name'=>item} : highscore
+        if item =~ /#{patt}/i
+          good_match = item
+          break;
         end
       }
-      return highscore['name']
+      if good_match
+        puts "=> #{good_match} (regex)" if @options.verbose
+      else
+        highscore = {'score'=>0,'name'=>nil}
+        fragment.downcase!
 
+        items.reverse.each {|item|
+          if fragment && !item.nil?
+            score = (Jaro.new(item.downcase).match(fragment) * 10).to_i
+            # puts "#{item} (#{score})" if @options.verbose
+            if score > highscore['score']
+              highscore = {'score'=>score,'name'=>item}
+            end
+          end
+        }
+        if highscore['name'].nil?
+          good_match = highscore['name']
+          puts "=> #{good_match} (Jaro: #{highscore['score']})" if @options.verbose
+        end
+      end
+
+      puts "=> NO_MATCH" if @options.verbose && !good_match
+      good_match
     end
 
     def parse_date(datestring)
@@ -207,29 +315,37 @@ class OTask
     end
 
     def process_command
+      if @options.list
+        list_type(@options.list[0], @options.list[1])
+        Process.exit 0
+      end
+
       of = app('OmniFocus')
       dd = of.default_document
 
       @props = {}
       @props['name'] = @options.name
       if @options.project
-        projs = dd.flattened_projects.name.get
-        @props['project'] = best_match(projs,@options.project)
+        projs = get_project_names({:type => :project})
+        name = best_match(projs,@options.project)
+        @props['project'] = name if name
       end
       if @options.context
-        ctxs = dd.flattened_contexts.name.get
-        @props['context'] = best_match(ctxs,@options.context)
+        ctxs = get_project_names({:type => :context})
+        name = best_match(ctxs,@options.context)
+        @props['context'] = name if name
       end
       @props['start_date'] = parse_date(@options.start) if @options.start
       @props['due_date'] = parse_date(@options.due) if @options.due
       @props['creation_date'] = parse_date(@options.creation) if @options.creation
       @props['note'] = @options.notes unless @options.notes == ''
       @props['flagged'] = @options.flagged
-      add_task(dd, @props)
+      add_task
       unless @options.quiet
-        o = "Task added to "
+        o = (@props['flagged'] ? "Flagged task \"" : "Task \"") + @props['name'] + "\" added to "
         o += @props['project'].nil? ? "Inbox" : @props['project']
         o += ", context "+@props['context']+"." unless @props['context'].nil?
+
         if @options.growl
           growl("Task created",o)
         else
@@ -241,3 +357,4 @@ class OTask
       end if @options.verbose
     end
 end
+

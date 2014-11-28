@@ -1,3 +1,3 @@
-class Otask
-  VERSION = '0.2.2'
+class OTask
+  VERSION = '0.2.3'
 end

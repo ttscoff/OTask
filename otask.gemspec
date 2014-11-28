@@ -2,7 +2,7 @@
 require File.join([File.dirname(__FILE__),'lib','version.rb'])
 spec = Gem::Specification.new do |s|
   s.name = 'otask'
-  s.version = Otask::VERSION
+  s.version = OTask::VERSION
   s.author = 'Brett Terpstra'
   s.email = 'me@brettterpstra.com'
   s.homepage = 'http://brettterpstra.com/'

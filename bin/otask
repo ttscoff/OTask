@@ -13,6 +13,7 @@
 #   -q, --quiet         Output as little as possible, overrides verbose
 #   -V, --verbose       Verbose output
 #   -g, --growl         Use Growl for feedback
+#   -l, --list [TYPE]   List all projects or contexts
 #
 # == Author
 #   Brett Terpstra
