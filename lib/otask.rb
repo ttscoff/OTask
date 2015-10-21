@@ -335,7 +335,7 @@ class OTask
         name = best_match(ctxs,@options.context)
         @props['context'] = name if name
       end
-      @props['start_date'] = parse_date(@options.start) if @options.start
+      @props['defer_date'] = parse_date(@options.start) if @options.start
       @props['due_date'] = parse_date(@options.due) if @options.due
       @props['creation_date'] = parse_date(@options.creation) if @options.creation
       @props['note'] = @options.notes unless @options.notes == ''
