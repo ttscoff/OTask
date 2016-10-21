@@ -26,7 +26,7 @@ lib/version.rb
   s.add_development_dependency 'rdoc', '~> 4.1', '>= 4.1.1'
   s.add_development_dependency 'aruba', '~> 0'
   s.add_runtime_dependency('chronic','~> 0.10', '>= 0.10.2')
-  s.add_runtime_dependency 'rb-appscript', '~> 0.6', '>= 0.6.1'
+  s.add_runtime_dependency 'rb-scpt', '~> 1.0.1'
   s.add_runtime_dependency 'amatch', '~> 0.3', '>= 0.3.0'
 
 end
