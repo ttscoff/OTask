@@ -2,7 +2,7 @@ require 'optparse'
 require 'ostruct'
 require 'date'
 require 'rubygems'
-require 'appscript';include Appscript
+require 'rb-scpt';include Appscript
 require 'amatch';include Amatch
 require 'chronic'
 require 'rdoc'
@@ -357,4 +357,3 @@ class OTask
       end if @options.verbose
     end
 end
-
